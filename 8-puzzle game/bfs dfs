@@ -1,0 +1,109 @@
+target=(
+    (1,2,3),
+    (4,5,6),
+    (7,8,'B')
+)
+
+start =(
+        (1,5,3),
+        (4,6,2),
+        (7,'B',8)
+    )
+
+stack=[]
+queue=[]
+vis1={}
+vis2={}
+def next(a1,s,v):
+        x=-1
+        y=-1
+        for i in range(3):
+            for j in range (3):
+                if a1[i][j]=='B':
+                    x=i
+                    y=j
+                    break
+            if x !=-1:
+                break
+        
+        a=list(list(i) for i in a1)
+        
+        if x>0:
+            a[x][y],a[x-1][y]=a[x-1][y],a[x][y]
+            a1=tuple(tuple(i) for i in a )
+            if a1 not in v:
+                s.append(a1)
+
+            a=list(list(i) for i in a1)
+            a[x][y],a[x-1][y]=a[x-1][y],a[x][y]
+
+
+        if y>0:
+            a[x][y],a[x][y-1]=a[x][y-1],a[x][y]
+            a1=tuple(tuple(i) for i in a )
+            if a1 not in v:
+                s.append(a1)
+
+            a=list(list(i) for i in a1)
+            a[x][y],a[x][y-1]=a[x][y-1],a[x][y]
+
+
+        if x<2:
+            a[x][y],a[x+1][y]=a[x+1][y],a[x][y]
+            a1=tuple(tuple(i) for i in a )
+            if a1 not in v:
+                s.append(a1)
+
+            a=list(list(i) for i in a1)
+            a[x][y],a[x+1][y]=a[x+1][y],a[x][y]
+
+
+        if y<2:
+            a[x][y],a[x][y+1]=a[x][y+1],a[x][y]
+            a1=tuple(tuple(i) for i in a )
+            if a1 not in v:
+                s.append(a1)
+
+            a=list(list(i) for i in a1)
+            a[x][y],a[x][y+1]=a[x][y+1],a[x][y]
+
+
+def dfs(a):
+        stack.append(a)
+        while stack:
+            v=stack[-1]
+            stack.pop()
+            vis1[v]=1
+            if v== target:
+                print("dfs")
+                print("done")
+                print("states used ",len(vis1))
+                break
+            next(v,stack,vis1)
+
+
+def bfs(a):
+        queue.append(a)
+        while queue:
+            v=queue[0]
+            queue.pop(0)
+            vis2[v]=1
+            if v== target:
+                print("bfs")
+                print("done")
+                print("states used ",len(vis2))
+                break
+            next(v,queue,vis2)
+
+    
+dfs(start)
+print(len(vis1))
+print("yes")
+bfs(start)
+print(len(vis2))
+    # s_s=""
+    # ans=open('ans.txt','a')
+    # for i in range(9):
+    #     s_s=s_s+s[i]
+    # ans_s=s_s+","+str(len(vis1))+","+str(len(vis2))+"\n"
+    # ans.write(ans_s)
